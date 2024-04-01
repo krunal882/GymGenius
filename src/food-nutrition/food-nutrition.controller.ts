@@ -1,5 +1,17 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { FoodNutritionService } from './food-nutrition.service';
+import { foodNutritionDto } from './dto/food-nutrition.dto';
+import mongoose from 'mongoose';
+import { updateFoodDto } from './dto/food-update.dto';
 
 @Controller('foodNutrition')
 export class FoodNutritionController {
@@ -19,5 +31,27 @@ export class FoodNutritionController {
     const queryParams = { category, name };
 
     return await this.foodNutritionService.getFilteredFood(queryParams);
+  }
+
+  @Post('/addFoodItem')
+  async addFoodItem(
+    @Body() FoodNutritionDto: foodNutritionDto,
+  ): Promise<string> {
+    return this.foodNutritionService.addFoodItem(FoodNutritionDto);
+  }
+
+  @Delete('/deleteFoodItem')
+  async deleteFoodItem(@Query('id') id: string): Promise<string> {
+    await this.foodNutritionService.deleteFoodItem(id);
+    return 'foodItem detail deleted successfully';
+  }
+
+  @Patch('/updateFoodItem')
+  async updateDietPlan(
+    @Query('id') id: mongoose.Types.ObjectId,
+    @Body() updateData: updateFoodDto,
+  ): Promise<string> {
+    await this.foodNutritionService.updateFoodItem(id, updateData);
+    return 'foodItem detail updated successfully';
   }
 }
