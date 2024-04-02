@@ -6,13 +6,16 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { exerciseDto } from './dto/exercise.dto';
 import mongoose from 'mongoose';
 import { updateExercise } from './dto/exercise-update.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('exercises')
+@UseGuards(AuthGuard)
 export class ExercisesController {
   constructor(private readonly exerciseService: ExercisesService) {}
 

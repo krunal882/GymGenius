@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { Response } from 'express';
 import mongoose from 'mongoose';
 import { updateUser } from './dto/user-update.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +35,25 @@ export class AuthController {
     return await this.authService.login(loginUserDto, res);
   }
 
+  @Post('/forgotPassword')
+  async forgotPassword(@Body('email') email: string): Promise<string> {
+    return await this.authService.forgotPassword(email);
+  }
+
+  @Post('/resetPassword')
+  async resetPassword(
+    @Body('resetPasswordToken') resetPasswordToken: string,
+    @Body('newPassword') newPassword: string,
+    @Body('newConfirmPassword') newConfirmPassword: string,
+  ): Promise<string> {
+    return await this.authService.resetPassword(
+      resetPasswordToken,
+      newPassword,
+      newConfirmPassword,
+    );
+  }
+
+  @UseGuards(AuthGuard)
   @Get('/users')
   async getAllUser() {
     return await this.authService.getAllUser();
@@ -54,24 +75,6 @@ export class AuthController {
       state,
     };
     return await this.authService.getFilteredUser(queryParams);
-  }
-
-  @Post('/forgotPassword')
-  async forgotPassword(@Body('email') email: string): Promise<string> {
-    return await this.authService.forgotPassword(email);
-  }
-
-  @Post('/resetPassword')
-  async resetPassword(
-    @Body('resetPasswordToken') resetPasswordToken: string,
-    @Body('newPassword') newPassword: string,
-    @Body('newConfirmPassword') newConfirmPassword: string,
-  ): Promise<string> {
-    return await this.authService.resetPassword(
-      resetPasswordToken,
-      newPassword,
-      newConfirmPassword,
-    );
   }
 
   @Delete('/deleteUser')

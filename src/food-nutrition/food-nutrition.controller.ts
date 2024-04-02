@@ -7,13 +7,16 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FoodNutritionService } from './food-nutrition.service';
 import { foodNutritionDto } from './dto/food-nutrition.dto';
 import mongoose from 'mongoose';
 import { updateFoodDto } from './dto/food-update.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('foodNutrition')
+@UseGuards(AuthGuard)
 export class FoodNutritionController {
   constructor(private readonly foodNutritionService: FoodNutritionService) {}
 
