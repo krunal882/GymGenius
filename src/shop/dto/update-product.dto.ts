@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class updateProductDto {
   @IsOptional()
@@ -37,4 +37,11 @@ export class updateProductDto {
   @IsOptional()
   @IsString({ message: 'product tag must be a string' })
   tag: string;
+
+  @IsOptional()
+  @IsString({ message: 'product state must be a string ' })
+  @IsEnum(['active', 'de-active'], {
+    message: 'product state must be active or de-active',
+  })
+  state: string;
 }

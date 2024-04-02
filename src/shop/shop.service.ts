@@ -25,7 +25,9 @@ export class ShopService {
 
     // Iterate over each category
     for (const category of categories) {
-      const products = await this.productModel.find({ category }).limit(12);
+      const products = await this.productModel
+        .find({ category, state: 'active' })
+        .limit(12);
       showcaseProducts.push(...products);
     }
 
@@ -49,7 +51,7 @@ export class ShopService {
       }
     });
 
-    const product = await this.productModel.find(filter);
+    const product = await this.productModel.find({ filter, state: 'active' });
 
     if (Object.keys(queryParams).includes('sortPriceLtoH')) {
       product.sort(

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class ProductDto {
   @IsNotEmpty({ message: 'please provide category of the product' })
@@ -32,4 +32,11 @@ export class ProductDto {
   @IsOptional()
   @IsString({ message: 'product tag must be a string' })
   tag: string;
+
+  @IsOptional()
+  @IsEnum(['active', 'de-active'], {
+    message: 'product state must be active or de-active',
+  })
+  @IsString({ message: 'product tag must be a string' })
+  state: string;
 }

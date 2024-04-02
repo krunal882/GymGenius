@@ -26,6 +26,9 @@ export class Product extends Document {
 
   @Prop({ required: [false] })
   tag: string;
+
+  @Prop({ required: [false] })
+  state: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
